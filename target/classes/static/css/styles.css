@@ -1,0 +1,23 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+    background-color: rgb(214, 214, 214);
+}
+
+/* input[type="file"] {
+    display: none;
+} */
+
+#selectFileButton {
+    font-family: calibri;
+    width: 150px;
+    padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid rgb(27, 27, 27);
+    text-align: center;
+    background-color: #DDD;
+    cursor: pointer;
+    margin: auto;
+  }

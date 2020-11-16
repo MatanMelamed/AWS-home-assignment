@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="./js/source.js"></script>
+<link rel="stylesheet" href="./css/styles.css"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Assignment</title>
+</head>
+<body>
+<h2>Upload an Image</h2>
+<br/>
+<!--<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>-->
+<!--target="dummyframe">-->
+<form method="POST" onsubmit="on_upload" action="/upload" enctype="multipart/form-data" >
+    <input type="file" name="file"/>
+    <input type="submit" value="Upload"/>
+</form>
+</body>
+</html>
