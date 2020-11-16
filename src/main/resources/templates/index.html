@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="./js/source.js"></script>
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="./css/styles.css"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Assignment</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">AWS - Home Assignment</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Photo App</h1>
+    </div>
+    <!-- To avoid redirection on form submitting, make a dummy invisible frame -->
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+    <form method="POST" onsubmit="on_upload" action="/upload" enctype="multipart/form-data" target="dummyframe">
+        <input type="file" name="file"/>
+        <input type="submit" value="Upload"/>
+    </form>
+
+
+    <div>
+        <br>
+
+        <p>Please find me photos that contain the following items: </p>
+        <input type="text" name="search_key">
+        <button onclick="getPhotos()">Get Photos</button>
+
+        <table id="myTable" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th>Size</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>No Data</td>
+                <td>No Data</td>
+                <td>No Data</td>
+                <td>No Data</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th>Size</th>
+            </tr>
+            </tfoot>
+            <div id="success3"></div>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
