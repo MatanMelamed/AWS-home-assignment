@@ -9,6 +9,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
+import java.net.URL;
 import java.util.*;
 
 import static java.lang.System.exit;
@@ -61,21 +62,20 @@ public class S3Service implements StorageService {
     }
 
     @Override
-    public StorageServiceFile fetchFile(Map<String, String> context, String objectKey) {
+    public StorageServiceFile fetchFile(Map<String, String> context, String fileKey) {
         checker(context);
 
         StorageServiceFile result = new StorageServiceFile();
 
         try {
             // Create a GetObjectRequest instance
-            GetObjectRequest objectRequest = GetObjectRequest
-                    .builder()
-                    .key(objectKey)
+            GetObjectRequest objectRequest = GetObjectRequest.builder()
+                    .key(fileKey)
                     .bucket(context.get(BUCKET_NAME))
                     .build();
 
             // ID
-            result.setID(objectKey);
+            result.setID(fileKey);
 
             // Metadata
             ResponseInputStream<GetObjectResponse> response = client.getObject(objectRequest);
@@ -118,5 +118,41 @@ public class S3Service implements StorageService {
 
         return results;
     }
+
+    @Override
+    public List<StorageServiceFile> fetchListedFiles(Map<String, String> context, List<String> fileNames) {
+
+        List<StorageServiceFile> results = new ArrayList<>();
+
+        for (String fileName : fileNames) {
+            results.add(fetchFile(context, fileName));
+        }
+
+        return results;
+    }
+
+    @Override
+    public String getFileUrl(Map<String, String> context, String fileKey) {
+        GetUrlRequest request = GetUrlRequest.builder()
+                .bucket(context.get(BUCKET_NAME))
+                .key(fileKey)
+                .build();
+
+        URL url = client.utilities().getUrl(request);
+        return url.toString();
+    }
+
+    @Override
+    public List<String> getListedFilesUrls(Map<String, String> context, List<String> fileNames) {
+        List<String> results = new ArrayList<>();
+
+        for (String fileName : fileNames) {
+            results.add(getFileUrl(context, fileName));
+        }
+
+        return results;
+    }
+
+
 }
 

@@ -33,8 +33,6 @@ public class DynamoDbService implements DatabaseService {
     public List<String> getValuesByKey(Map<String, String> context, String itemKey, String itemAttr) {
         checker(context);
 
-        Map<String, AttributeValue> results = null;
-
         HashMap<String, AttributeValue> itemKeyMap = new HashMap<>();
         itemKeyMap.put(context.get(PARTITION_KEY), AttributeValue.builder().s(itemKey).build());
 
@@ -45,7 +43,8 @@ public class DynamoDbService implements DatabaseService {
                 .build();
 
         try {
-            results = dbClient.getItem(request).item();
+
+            Map<String, AttributeValue> results = dbClient.getItem(request).item();
 
             if (results == null) {
                 throw new Exception("No item found with the key " + itemKey);

@@ -6,7 +6,14 @@ import java.util.Map;
 public interface StorageService {
     String storeFile(Map<String, String> context, StorageServiceFile file);
 
-    StorageServiceFile fetchFile(Map<String, String> context, String objectKey);
+    StorageServiceFile fetchFile(Map<String, String> context, String fileKey);
 
     List<StorageServiceFile> fetchAllFiles(Map<String, String> context);
+
+    List<StorageServiceFile> fetchListedFiles(Map<String, String> context, List<String> fileNames);
+
+    String getFileUrl(Map<String, String> context, String fileKey);
+
+    List<String> getListedFilesUrls(Map<String, String> context, List<String> fileNames);
+
 }

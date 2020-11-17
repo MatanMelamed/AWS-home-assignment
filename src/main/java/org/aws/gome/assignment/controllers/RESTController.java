@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 public class RESTController {
@@ -38,9 +37,12 @@ public class RESTController {
         return "index";
     }
 
-    @RequestMapping(value = "/getphotos", method = RequestMethod.GET)
-    public String getImages(HttpServletRequest request, HttpServletResponse response) {
-        handler.getPhotos();
+    @RequestMapping(value = "/showphotos", method = RequestMethod.GET)
+    public String getImages(@RequestParam("search_key") String searchKey, Model model) {
+        List<String> photosData = handler.getPhotosUrlsByLabel(searchKey);
+
+        model.addAttribute("photos", photosData);
+        System.out.println("finished get image");
         return "index";
     }
 }

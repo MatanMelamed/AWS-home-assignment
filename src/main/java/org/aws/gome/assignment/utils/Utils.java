@@ -1,6 +1,7 @@
 package org.aws.gome.assignment.utils;
 
 import org.aws.gome.assignment.services.database.DynamoDbService;
+import org.aws.gome.assignment.services.storage.S3Service;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,14 +27,20 @@ public class Utils {
 
 
     public static void main(String[] args) {
-        DynamoDbService service = new DynamoDbService();
-        HashMap<String, String> context = new HashMap<>();
-        context.put(DynamoDbService.TABLE_NAME, "aws-hm-search-values");
-        context.put(DynamoDbService.PARTITION_KEY, "search_key");
-//        service.addValuesToKey(context, "ball", "photos", Arrays.asList("h", "ds"));
-        List<String> res = service.getValuesByKey(context, "ball", "photos");
-        for (String s : res) {
-            System.out.println(s);
-        }
+//        DynamoDbService service = new DynamoDbService();
+//        HashMap<String, String> context = new HashMap<>();
+//        context.put(DynamoDbService.TABLE_NAME, "aws-hm-search-values");
+//        context.put(DynamoDbService.PARTITION_KEY, "search_key");
+////        service.addValuesToKey(context, "ball", "photos", Arrays.asList("h", "ds"));
+//        List<String> res = service.getValuesByKey(context, "ball", "photos");
+//        for (String s : res) {
+//            System.out.println(s);
+//        }
+
+        S3Service s3Service = new S3Service();
+        HashMap<String, String> s3ServiceContext = new HashMap<>();
+        s3ServiceContext.put(S3Service.BUCKET_NAME, "photos-aws-practice");
+        String s = s3Service.getFileUrl(s3ServiceContext, "soccer1.jpg");
+        System.out.println(s);
     }
 }

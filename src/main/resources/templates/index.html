@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <script src="./js/source.js"></script>
 
@@ -35,16 +35,24 @@
     </form>
 
 
-    <form method="GET" onsubmit="on_upload" action="/getphotos" enctype="multipart/form-data" target="dummyframe">
-        <input type="submit" value="get them"/>
-    </form>
-
     <div>
         <br>
 
         <p>Please find me photos that contain the following items: </p>
-        <input type="text" name="search_key">
-        <button onclick="getPhotos()">Get Photos</button>
+        <form method="GET" onsubmit="on_upload" action="/showphotos" enctype="multipart/form-data" target="dummyframe">
+            <input type="text" name="search_key">
+            <input type="submit" value="search photos"/>
+        </form>
+
+        <div th:each="file : ${photos}">
+            <div class="gallery">
+                <p>${file}</p>
+                <img th:src="${file}">
+                <!--                <a target="_blank" th:href="${file}"> <img th:src="${file}"-->
+                <!--                                                           height="200" />-->
+                <!--                </a>-->
+            </div>
+        </div>
 
         <table id="myTable" class="display" style="width:100%">
             <thead>
