@@ -1,0 +1,15 @@
+org\aws\gome\assignment\services\storage\S3Service.class
+org\aws\gome\assignment\services\photos\RekognitionService$1.class
+org\aws\gome\assignment\utils\Constants.class
+org\aws\gome\assignment\AssignmentApplication.class
+org\aws\gome\assignment\handlers\MainHandler$1.class
+org\aws\gome\assignment\services\storage\StorageServiceFile.class
+org\aws\gome\assignment\services\database\DatabaseService.class
+org\aws\gome\assignment\services\database\DynamoDbService.class
+org\aws\gome\assignment\services\photos\PhotoAnalyzerService.class
+org\aws\gome\assignment\services\photos\RekognitionService.class
+org\aws\gome\assignment\utils\Utils.class
+org\aws\gome\assignment\handlers\MainHandler$2.class
+org\aws\gome\assignment\handlers\MainHandler.class
+org\aws\gome\assignment\services\storage\StorageService.class
+org\aws\gome\assignment\controllers\RESTController.class

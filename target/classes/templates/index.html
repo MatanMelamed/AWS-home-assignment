@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<script src="./js/source.js"></script>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="./css/styles.css"/>
+
+<script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script type="application/javascript" src="./js/source.js"></script>
+<script type="application/javascript" src="./js/index.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -34,53 +37,12 @@
         <input type="submit" value="Upload"/>
     </form>
 
-
+    <br>
     <div>
-        <br>
-
         <p>Please find me photos that contain the following items: </p>
-        <form method="GET" onsubmit="on_upload" action="/showphotos" enctype="multipart/form-data" target="dummyframe">
-            <input type="text" name="search_key">
-            <input type="submit" value="search photos"/>
-        </form>
-
-        <div th:each="file : ${photos}">
-            <div class="gallery">
-                <p>${file}</p>
-                <img th:src="${file}">
-                <!--                <a target="_blank" th:href="${file}"> <img th:src="${file}"-->
-                <!--                                                           height="200" />-->
-                <!--                </a>-->
-            </div>
-        </div>
-
-        <table id="myTable" class="display" style="width:100%">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Owner</th>
-                <th>Date</th>
-                <th>Size</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>No Data</td>
-                <td>No Data</td>
-                <td>No Data</td>
-                <td>No Data</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Owner</th>
-                <th>Date</th>
-                <th>Size</th>
-            </tr>
-            </tfoot>
-            <div id="success3"></div>
-        </table>
+        <input type="text" name="searchKey">
+        <button onclick="handleGetPhotos()">click</button>
+        <div id="photos"></div>
     </div>
 
 </div>
