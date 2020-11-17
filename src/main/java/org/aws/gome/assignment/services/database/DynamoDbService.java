@@ -30,7 +30,7 @@ public class DynamoDbService implements DatabaseService {
     }
 
     @Override
-    public List<String> getValuesByKey(Map<String, String> context, String itemKey, String itemAttr) {
+    public List<String> getAttributeValuesByKey(Map<String, String> context, String itemKey, String itemAttr) {
         checker(context);
 
         HashMap<String, AttributeValue> itemKeyMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class DynamoDbService implements DatabaseService {
     }
 
     @Override
-    public void addValuesToKey(Map<String, String> context, String itemKey, String itemAttr, List<String> attrValues) {
+    public void addAttributeValuesToKey(Map<String, String> context, String itemKey, String itemAttr, List<String> attrValues) {
 
         HashMap<String, AttributeValue> itemKeyMap = new HashMap<>();
         itemKeyMap.put(context.get(PARTITION_KEY), AttributeValue.builder().s(itemKey).build());

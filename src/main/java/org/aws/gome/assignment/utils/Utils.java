@@ -1,9 +1,7 @@
 package org.aws.gome.assignment.utils;
 
-import org.aws.gome.assignment.services.database.DynamoDbService;
 import org.aws.gome.assignment.services.storage.S3Service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +17,7 @@ public class Utils {
         return sb.toString();
     }
 
-    public static Optional<String> getExtension(String filename) {
+    public static Optional<String> getFileExtension(String filename) {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1));

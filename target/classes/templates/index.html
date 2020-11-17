@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="./css/styles.css"/>
-
-<script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<script type="application/javascript" src="./js/source.js"></script>
-<script type="application/javascript" src="./js/index.js"></script>
+<html lang="en">
 
 <head>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+
+
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="application/javascript" src="./js/index.js"></script>
+
+
     <meta charset="UTF-8">
     <title>Home Assignment</title>
 </head>
@@ -29,22 +29,33 @@
     <div class="page-header">
         <h1>Photo App</h1>
     </div>
-    <!-- To avoid redirection on form submitting, make a dummy invisible frame -->
-    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
-    <form method="POST" onsubmit="on_upload" action="/upload" enctype="multipart/form-data" target="dummyframe">
-        <input type="file" name="file"/>
-        <input type="submit" value="Upload"/>
-    </form>
+    <div class="uploadPhotoSection">
+        <h3>Upload a Photo</h3>
+        <div class="uploadPhotoDiv">
+            <input type="file" id="inputFile">
+            <button onclick="handleUploadPhoto()">Upload</button>
+        </div>
 
-    <br>
-    <div>
-        <p>Please find me photos that contain the following items: </p>
-        <input type="text" name="searchKey">
-        <button onclick="handleGetPhotos()">click</button>
-        <div id="photos"></div>
+        <div id="uploadLoader" class="loader"></div>
+        <div class="uploadNotificationDiv">Notification placeholder</div>
     </div>
 
+    <div class="searchPhotoSection">
+        <h3>Search a Photo</h3>
+        <div class="searchPhotoDiv">
+            <input type="text" id="searchKey">
+            <button onclick="handleSearchPhotos()">click</button>
+        </div>
+
+        <div class="searchNotificationDiv">Notification placeholder</div>
+
+        <div id="searchLoader" class="loader"></div>
+        <div id="photos" class="photos">
+        </div>
+    </div>
 </div>
+
 </body>
+
 </html>

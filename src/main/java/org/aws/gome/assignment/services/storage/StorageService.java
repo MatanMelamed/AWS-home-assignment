@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface StorageService {
-    String storeFile(Map<String, String> context, StorageServiceFile file);
+    // TODO: delete unused code
+    void storeFile(Map<String, String> context, StorageServiceFile file);
 
     StorageServiceFile fetchFile(Map<String, String> context, String fileKey);
 

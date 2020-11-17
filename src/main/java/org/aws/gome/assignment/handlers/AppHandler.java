@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class MainHandler {
+public class AppHandler {
 
     // photo label analyzing service
     private final PhotoAnalyzerService photoAnalyzerService = new RekognitionService();
@@ -39,25 +39,29 @@ public class MainHandler {
     }};
     private final char METADATA_DELIMITER = ':';
 
+    private boolean isFileExtensionSupported(String fileName) {
+        Optional<String> extension = Utils.getFileExtension(fileName);
+        List<String> supportedFormats = photoAnalyzerService.getSupportedFormats();
+        return !extension.isPresent() || !supportedFormats.contains(extension.get());
+    }
+
     public void uploadPhoto(MultipartFile file) {
         // file extension support check
-        Optional<String> extension = Utils.getExtension(file.getOriginalFilename());
-        List<String> supportedFormats = photoAnalyzerService.getSupportedFormats();
-        if (!extension.isPresent() || !supportedFormats.contains(extension.get())) {
+        if (isFileExtensionSupported(file.getOriginalFilename())) {
             System.err.println("file " + file.getOriginalFilename() + " has unsupported format.\n");
             return;
         }
 
         try {
             // analyze photo, create a storage file and upload it.
-            List<String> labels = photoAnalyzerService.detectLabels(file.getBytes(), 75.0f);
+            List<String> labels = photoAnalyzerService.detectLabels(file.getBytes(), Constants.PhotoLabelConfidence);
 
             // store label to photos name in database
             for (String label : labels) {
-                databaseService.addValuesToKey(databaseContext,
-                                               label.toLowerCase(),
-                                               DB_ATTR,
-                                               Collections.singletonList(file.getOriginalFilename()));
+                databaseService.addAttributeValuesToKey(databaseContext,
+                                                        label.toLowerCase(),
+                                                        DB_ATTR,
+                                                        Collections.singletonList(file.getOriginalFilename()));
             }
 
             // update photo metadata
@@ -79,7 +83,7 @@ public class MainHandler {
 
     public List<String> getPhotosUrlsByLabel(String label) {
         // get photos name by label
-        List<String> photosNames = databaseService.getValuesByKey(databaseContext, label.toLowerCase(), DB_ATTR);
+        List<String> photosNames = databaseService.getAttributeValuesByKey(databaseContext, label.toLowerCase(), DB_ATTR);
 
         if (photosNames == null) {
             System.out.println("No Photos Found.");

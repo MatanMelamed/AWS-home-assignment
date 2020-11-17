@@ -1,6 +1,6 @@
 package org.aws.gome.assignment.controllers;
 
-import org.aws.gome.assignment.handlers.MainHandler;
+import org.aws.gome.assignment.handlers.AppHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +14,10 @@ import java.util.List;
 public class RESTController {
 
     @Autowired
-    private final MainHandler handler;
+    private final AppHandler handler;
 
     @Autowired
-    public RESTController(MainHandler storageService) {
+    public RESTController(AppHandler storageService) {
         this.handler = storageService;
     }
 
@@ -37,8 +37,6 @@ public class RESTController {
     @ResponseBody
     public List<String> getImages(@RequestParam("search_key") String searchKey, Model model) {
         return handler.getPhotosUrlsByLabel(searchKey);
-//        return "index";
-//        return Arrays.asList("a", "b");
     }
 
 

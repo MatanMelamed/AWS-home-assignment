@@ -36,7 +36,7 @@ public class S3Service implements StorageService {
     }
 
     @Override
-    public String storeFile(Map<String, String> context, StorageServiceFile file) {
+    public void storeFile(Map<String, String> context, StorageServiceFile file) {
         checker(context);
 
         for (String s : file.getMetadata().keySet()) {
@@ -51,14 +51,11 @@ public class S3Service implements StorageService {
 
             PutObjectResponse response = client.putObject(request, RequestBody.fromBytes(file.getData()));
 
-            return response.eTag();
-
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
             exit(1);
         }
 
-        return "";
     }
 
     @Override
