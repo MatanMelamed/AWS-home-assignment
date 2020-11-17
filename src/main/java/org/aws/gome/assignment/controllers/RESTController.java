@@ -17,8 +17,8 @@ public class RESTController {
     private final AppHandler handler;
 
     @Autowired
-    public RESTController(AppHandler storageService) {
-        this.handler = storageService;
+    public RESTController(AppHandler appHandler) {
+        this.handler = appHandler;
     }
 
     @GetMapping("/")
@@ -38,6 +38,4 @@ public class RESTController {
     public List<String> getImages(@RequestParam("search_key") String searchKey, Model model) {
         return handler.getPhotosUrlsByLabel(searchKey);
     }
-
-
 }
