@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PhotoAnalyzerService {
 
-    public List<String> detectLabels(byte[] photoBytes);
+    List<String> detectLabels(byte[] photoBytes, float confidenceThreshold);
 
     List<String> getSupportedFormats();
 }

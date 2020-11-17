@@ -1,5 +1,9 @@
 package org.aws.gome.assignment.utils;
 
+import org.aws.gome.assignment.services.database.DynamoDbService;
+
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +26,14 @@ public class Utils {
 
 
     public static void main(String[] args) {
-        Optional<String> s = getExtension("no-extention.p");
-        System.out.println(s);
-        System.out.println(s.isPresent());
-        System.out.println(s.get());
+        DynamoDbService service = new DynamoDbService();
+        HashMap<String, String> context = new HashMap<>();
+        context.put(DynamoDbService.TABLE_NAME, "aws-hm-search-values");
+        context.put(DynamoDbService.PARTITION_KEY, "search_key");
+//        service.addValuesToKey(context, "ball", "photos", Arrays.asList("h", "ds"));
+        List<String> res = service.getValuesByKey(context, "ball", "photos");
+        for (String s : res) {
+            System.out.println(s);
+        }
     }
 }

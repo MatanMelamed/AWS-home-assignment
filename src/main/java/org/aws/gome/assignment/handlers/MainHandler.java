@@ -1,5 +1,7 @@
 package org.aws.gome.assignment.handlers;
 
+import org.aws.gome.assignment.services.database.DatabaseService;
+import org.aws.gome.assignment.services.database.DynamoDbService;
 import org.aws.gome.assignment.services.photos.PhotoAnalyzerService;
 import org.aws.gome.assignment.services.photos.RekognitionService;
 import org.aws.gome.assignment.services.storage.S3Service;
@@ -11,16 +13,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
 public class MainHandler {
 
+    // photo label analyzing service
     private final PhotoAnalyzerService photoAnalyzerService = new RekognitionService();
 
+    // label to photos name storing service
+    private final DatabaseService databaseService = new DynamoDbService();
+    private final HashMap<String, String> databaseContext = new HashMap<String, String>() {{
+        put(DynamoDbService.TABLE_NAME, "aws-hm-search-values");
+        put(DynamoDbService.PARTITION_KEY, "search_key");
+    }};
+
+    // photo storage service
     private final StorageService storageService = new S3Service();
     private final HashMap<String, String> storageContext = new HashMap<String, String>() {{
         put(S3Service.BUCKET_NAME, "photos-aws-practice");
@@ -38,15 +47,26 @@ public class MainHandler {
             return;
         }
 
-        // analyze photo, create a storage file and upload it.
         try {
-            List<String> labels = photoAnalyzerService.detectLabels(file.getBytes());
-            fileMetadata.put(Constants.LABELS, Utils.ConvertListStringToString(labels, ':'));
+            // analyze photo, create a storage file and upload it.
+            List<String> labels = photoAnalyzerService.detectLabels(file.getBytes(), 75.0f);
 
+            // store label to photos name in database
+            for (String label : labels) {
+                String DB_ATTR = "photos";
+                databaseService.addValuesToKey(databaseContext, label, DB_ATTR, Collections.singletonList(file.getOriginalFilename()));
+            }
+
+            // update photo metadata
+            char METADATA_DELIMITER = ':';
+            fileMetadata.put(Constants.LABELS, Utils.ConvertListStringToString(labels, METADATA_DELIMITER));
+
+            // create a storage file to store
             storageFile = new StorageServiceFile(file.getOriginalFilename(),
                                                  file.getBytes(),
                                                  fileMetadata);
 
+            // store the storage file
             storageService.storeFile(storageContext, storageFile);
         } catch (IOException e) {
             e.printStackTrace();
