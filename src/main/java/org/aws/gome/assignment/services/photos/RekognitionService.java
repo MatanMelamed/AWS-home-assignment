@@ -28,7 +28,6 @@ public class RekognitionService implements PhotoAnalyzerService {
 
     @Override
     public List<String> detectLabels(byte[] photoBytes, float confidenceThreshold) {
-
         List<String> results = new ArrayList<>();
 
         SdkBytes sdkBytes = SdkBytes.fromByteArray(photoBytes);
@@ -42,7 +41,6 @@ public class RekognitionService implements PhotoAnalyzerService {
         DetectLabelsResponse labelsResponse = rekClient.detectLabels(detectLabelsRequest);
 
         for (Label l : labelsResponse.labels()) {
-//            System.out.println(l.name() + ": " + l.confidence().toString());
             if (l.confidence() > confidenceThreshold) {
                 results.add(l.name());
             }
