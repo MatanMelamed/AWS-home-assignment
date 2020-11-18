@@ -26,7 +26,6 @@ public class RESTController {
         return "index";
     }
 
-    // Upload an image
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         handler.uploadPhoto(file);
@@ -38,6 +37,4 @@ public class RESTController {
     public List<String> getImages(@RequestParam("search_key") String searchKey, Model model) {
         return handler.getPhotosUrlsByLabel(searchKey);
     }
-
-
 }

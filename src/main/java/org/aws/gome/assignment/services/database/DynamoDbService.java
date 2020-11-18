@@ -37,8 +37,8 @@ public class DynamoDbService implements DatabaseService {
         itemKeyMap.put(context.get(PARTITION_KEY), AttributeValue.builder().s(itemKey).build());
 
         GetItemRequest request = GetItemRequest.builder()
-                .key(itemKeyMap)
                 .tableName(context.get(TABLE_NAME))
+                .key(itemKeyMap)
                 .attributesToGet(itemAttr)
                 .build();
 
@@ -67,6 +67,7 @@ public class DynamoDbService implements DatabaseService {
 
     @Override
     public void addAttributeValuesToKey(Map<String, String> context, String itemKey, String itemAttr, List<String> attrValues) {
+        checker(context);
 
         HashMap<String, AttributeValue> itemKeyMap = new HashMap<>();
         itemKeyMap.put(context.get(PARTITION_KEY), AttributeValue.builder().s(itemKey).build());
@@ -87,15 +88,9 @@ public class DynamoDbService implements DatabaseService {
 
         try {
             dbClient.updateItem(request);
-        } catch (ResourceNotFoundException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
         } catch (DynamoDbException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-
     }
-
-
 }

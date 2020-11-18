@@ -13,12 +13,6 @@ public class StorageServiceFile {
         metadata = new HashMap<>();
     }
 
-    public StorageServiceFile(String ID, byte[] data, Map<String, String> metadata) {
-        this.ID = ID;
-        this.data = data;
-        this.metadata = metadata;
-    }
-
     public String getID() {
         return ID;
     }

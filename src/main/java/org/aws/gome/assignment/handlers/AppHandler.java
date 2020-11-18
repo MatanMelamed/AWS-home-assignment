@@ -37,7 +37,6 @@ public class AppHandler {
     private final HashMap<String, String> storageContext = new HashMap<String, String>() {{
         put(S3Service.BUCKET_NAME, "photos-aws-practice");
     }};
-    private final char METADATA_DELIMITER = ':';
 
     private boolean isFileExtensionSupported(String fileName) {
         Optional<String> extension = Utils.getFileExtension(fileName);
@@ -45,40 +44,36 @@ public class AppHandler {
         return !extension.isPresent() || !supportedFormats.contains(extension.get());
     }
 
+    private void analyzePhoto(StorageServiceFile storagePhoto) {
+        // analyze photo, create a storage file and upload it.
+        List<String> labels = photoAnalyzerService.detectLabels(storagePhoto.getData(), Constants.PhotoLabelConfidence);
+
+        // store label to photos name in database
+        for (String label : labels) {
+            databaseService.addAttributeValuesToKey(databaseContext,
+                                                    label.toLowerCase(),
+                                                    DB_ATTR,
+                                                    Collections.singletonList(storagePhoto.getID()));
+        }
+    }
+
     public void uploadPhoto(MultipartFile file) {
-        // file extension support check
         if (isFileExtensionSupported(file.getOriginalFilename())) {
             System.err.println("file " + file.getOriginalFilename() + " has unsupported format.\n");
             return;
         }
 
         try {
-            // analyze photo, create a storage file and upload it.
-            List<String> labels = photoAnalyzerService.detectLabels(file.getBytes(), Constants.PhotoLabelConfidence);
+            StorageServiceFile storageFile = new StorageServiceFile();
+            storageFile.setID(file.getOriginalFilename());
+            storageFile.setData(file.getBytes());
 
-            // store label to photos name in database
-            for (String label : labels) {
-                databaseService.addAttributeValuesToKey(databaseContext,
-                                                        label.toLowerCase(),
-                                                        DB_ATTR,
-                                                        Collections.singletonList(file.getOriginalFilename()));
-            }
+            analyzePhoto(storageFile);
 
-            // update photo metadata
-            HashMap<String, String> fileMetadata = new HashMap<>();
-            fileMetadata.put(Constants.LABELS, Utils.ConvertListStringToString(labels, METADATA_DELIMITER));
-
-            // create a storage file to store
-            StorageServiceFile storageFile = new StorageServiceFile(file.getOriginalFilename(),
-                                                                    file.getBytes(),
-                                                                    fileMetadata);
-
-            // store the storage file
             storageService.storeFile(storageContext, storageFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Done uploading");
     }
 
     public List<String> getPhotosUrlsByLabel(String label) {
@@ -90,17 +85,8 @@ public class AppHandler {
             return null;
         }
 
-        // get photos urls by photos names
-        List<String> photosUrls = photosNames.stream()
+        return photosNames.stream()
                 .map(name -> storageService.getFileUrl(storageContext, name))
                 .collect(Collectors.toList());
-
-//        List<StorageServiceFile> photos = storageService.fetchListedFiles(storageContext, photosNames);
-//
-//        for (StorageServiceFile file : photos) {
-//            System.out.println(file);
-//        }
-        return photosUrls;
     }
-
 }
