@@ -2,6 +2,7 @@ package org.aws.gome.assignment.services.storage;
 
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
+import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -10,7 +11,6 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.net.URL;
 import java.util.*;
 
-import static java.lang.System.exit;
 
 @Component
 public class S3Service implements StorageService {
@@ -26,23 +26,24 @@ public class S3Service implements StorageService {
 
     }
 
-    private void checker(Map<String, String> context) {
+    private boolean isContextValid(Map<String, String> context) {
         if (!context.containsKey(BUCKET_NAME)) {
             System.err.printf("S3Service storeFile context doesn't contain %s", BUCKET_NAME);
-            System.exit(-1);
+            return false;
         }
+        return true;
     }
 
     @Override
-    public void storeFile(Map<String, String> context, StorageServiceFile file) {
-        checker(context);
+    public void storeFile(Map<String, String> storageContext, StorageServiceFile file) {
+        if (!isContextValid(storageContext)) { return; }
 
         for (String s : file.getMetadata().keySet()) {
             System.out.println(file.getMetadata().get(s));
         }
         try {
             PutObjectRequest request = PutObjectRequest.builder()
-                    .bucket(context.get(BUCKET_NAME))
+                    .bucket(storageContext.get(BUCKET_NAME))
                     .key(file.getID())
                     .metadata(file.getMetadata())
                     .build();
@@ -51,21 +52,25 @@ public class S3Service implements StorageService {
 
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
-            exit(1);
         }
     }
 
     @Override
-    public String getFileUrl(Map<String, String> context, String fileKey) {
-        checker(context);
+    public String getFileUrl(Map<String, String> storageContext, String fileKey) {
+        if (!isContextValid(storageContext)) { return ""; }
+        String results = null;
 
         GetUrlRequest request = GetUrlRequest.builder()
-                .bucket(context.get(BUCKET_NAME))
+                .bucket(storageContext.get(BUCKET_NAME))
                 .key(fileKey)
                 .build();
-
-        URL url = client.utilities().getUrl(request);
-        return url.toString();
+        try {
+            URL url = client.utilities().getUrl(request);
+            results = url.toString();
+        } catch (SdkException e) {
+            System.err.println(e.getMessage());
+        }
+        return results;
     }
 }
 

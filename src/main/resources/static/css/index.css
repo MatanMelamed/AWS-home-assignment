@@ -25,7 +25,7 @@ body {
 }
 
 .uploadNotificationDiv {
-    opacity: 0;
+    display: none;
     align-self: center;
     font-weight: bold;
 }
@@ -45,7 +45,7 @@ body {
 }
 
 .searchNotificationDiv {
-    opacity: 0;
+    display: none;
     align-self: center;
     font-weight: bold;
 }

@@ -1,6 +1,6 @@
 function handleUploadPhoto(){
     $("#uploadLoader").css("display","block")
-    $(".uploadNotificationDiv").css("opacity","0")
+    $(".uploadNotificationDiv").css("display","none")
 
 
     var formData = new FormData();
@@ -22,16 +22,16 @@ function handleUploadPhoto(){
          });
  }
 
-function onUploadPhotoSuccess(data) {
+function onUploadPhotoSuccess() {
     $("#uploadLoader").css("display","none")
     $(".uploadNotificationDiv").html("Successfully uploaded the photo.")
-    $(".uploadNotificationDiv").css("opacity","100")
+    $(".uploadNotificationDiv").css("display","block")
 }
 
-function onUploadPhotoFail(data) {
+function onUploadPhotoFail() {
     $("#uploadLoader").css("display","none")
     $(".uploadNotificationDiv").html("Upload photo failed.")
-    $(".uploadNotificationDiv").css("opacity","100")
+    $(".uploadNotificationDiv").css("display","block")
 }
 
 
@@ -66,6 +66,6 @@ function processSearchPhotosResponse(data) {
 function onSearchPhotosFail() {
     $("#searchLoader").css("display","none")
     $(".searchNotificationDiv").html("Search photos failed.")
-    $(".searchNotificationDiv").css("opacity","100")
+    $(".searchNotificationDiv").css("display","block")
 }
 

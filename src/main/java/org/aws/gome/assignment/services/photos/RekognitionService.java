@@ -1,5 +1,6 @@
 package org.aws.gome.assignment.services.photos;
 
+import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
@@ -11,6 +12,7 @@ import software.amazon.awssdk.services.rekognition.model.Label;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class RekognitionService implements PhotoAnalyzerService {
 
     RekognitionClient rekClient;
