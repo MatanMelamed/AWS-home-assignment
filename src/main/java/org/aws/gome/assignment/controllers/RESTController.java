@@ -35,6 +35,9 @@ public class RESTController {
     @RequestMapping(value = "/showPhotos", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<String> getImages(@RequestParam("search_key") String searchKey, Model model) {
+        if (searchKey.isEmpty()) {
+            return null;
+        }
         return handler.getPhotosUrlsByLabel(searchKey);
     }
 }
